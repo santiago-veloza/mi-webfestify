@@ -2,22 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}" alt="fondo">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" alt="fondo">
 </head>
 <body>
-    <h1>Registro</h1>
+    <h1>Iniciar Sesión</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <p>{{ form.name.label }} {{ form.name }}</p>
         <p>{{ form.email.label }} {{ form.email }}</p>
         <p>{{ form.password.label }} {{ form.password }}</p>
         <p>{{ form.submit }}</p>
     </form>
 </body>
-<nav>
-    <a href="/">Inicio</a>
-    <a href="/login">Iniciar Sesión</a>
-<nav>
-<body>
 </html>
