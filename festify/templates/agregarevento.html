@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Evento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/agregarevento.css') }}" alt="fondo">
+</head>
+<body>
+    <h1>Agregar Nuevo Evento</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <label for="nombre">{{ form.nombre.label }}</label>
+        {{ form.nombre }}
+
+        <label for="fecha">{{ form.fecha.label }}</label>
+        {{ form.fecha }}
+
+        <label for="ubicacion">{{ form.ubicacion.label }}</label>
+        {{ form.ubicacion }}
+
+        <label for="descripcion">{{ form.descripcion.label }}</label>
+        {{ form.descripcion }}
+
+        <button type="submit">Agregar Evento</button>
+    </form>
+</body>
+</html>

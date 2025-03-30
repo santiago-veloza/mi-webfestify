@@ -7,17 +7,19 @@
 </head>
 <body>
     <header>
-        <h1>Mi Web</h1>
-        <img src="{{ url_for('static', filename='img/fondo.jpg') }}" alt="Logo" class="logo">
-        <nav>
-            <a href="/">Inicio</a>
-            <a href="/about">Acerca de nosotros</a>
-            <a href="/registro">Registro</a>
-        </nav>
+        <h1>Festify</h1>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
     </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+    <h3>Menu</h3>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/about">Acerca de nosotros</a>
+        <a href="/registro">Registro</a>
+    </nav>
+    <img src="{{ url_for('static', filename='img/fondo1.jpg') }}" alt="Logo" class="logo">
+    
 </body>
 </html>

@@ -1,7 +1,7 @@
 /* General */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
     color: #333;
     text-align: center;
     margin: 0;
@@ -11,7 +11,7 @@ body {
 /* Header */
 header {
     background: linear-gradient(135deg, #6e8efb, #a777e3);
-    color: white;
+    color: rgb(8, 1, 1);
     padding: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -23,7 +23,7 @@ header h1 {
 
 /* Logo */
 .logo {
-    width: 80px;
+    width: 750px;
     height: auto;
     border-radius: 10%;
 }
