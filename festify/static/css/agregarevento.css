@@ -50,3 +50,22 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Navegación */
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #1cf853;
+}
+
+

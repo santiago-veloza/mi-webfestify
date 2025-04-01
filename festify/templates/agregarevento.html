@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/agregarevento.css') }}" alt="fondo">
 </head>
 <body>
+    <nav>
+        <a href="/">Inicio</a>
+    </nav> 
     <h1>Agregar Nuevo Evento</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
@@ -21,7 +24,7 @@
         {{ form.hora }}
 
         <label for='tiquetes'>{{ form.tiquetes.label }}</label>
-        {{ form.tiquetes }}
+        {{ form.tiquetes(class="form-control") }}
         
         <label for="precio">{{ form.precio.label }}</label>
         {{ form.precio }}

@@ -14,8 +14,7 @@ class EventoForm(FlaskForm):
     nombre = StringField('Nombre del Evento', validators=[DataRequired()])
     fecha = DateField('Fecha', format='%Y-%m-%d', validators=[DataRequired()])
     hora = TimeField('Hora', format='%H:%M', validators=[DataRequired()])
-    tiquetes = IntegerField('Número de Tiquetes', validators=[DataRequired()])
-
+    tiquetes = IntegerField('Número de tiquetes', validators=[DataRequired()])
     precio = StringField('Precio', validators=[DataRequired()])
     ubicacion = StringField('Ubicación', validators=[DataRequired()])
     descripcion = TextAreaField('Descripción', validators=[DataRequired()])
