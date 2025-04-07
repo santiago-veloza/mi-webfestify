@@ -1,3 +1,5 @@
+#run.py
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 import mariadb
 from festify.forms import MiFormulario, EventoForm, LoginForm  
@@ -8,22 +10,28 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
 
 # Configuración de la base de datos
-config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'ucc2025',
-    'database': 'festify',
-    'port': 3306
-}
+class DBConnection:
+    _instance = None
+    _conn = None
 
-# Función para conectar a la base de datos
-def get_db_connection():
-    try:
-        conn = mariadb.connect(**config)
-        return conn
-    except mariadb.Error as e:
-        print(f"Error conectando a MariaDB: {e}")
-        return None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DBConnection, cls).__new__(cls)
+            try:
+                cls._conn = mariadb.connect(
+                    host='localhost',
+                    user='root',
+                    password='ucc2025',
+                    database='festify',
+                    port=3306
+                )
+            except mariadb.Error as e:
+                print(f"Error de conexión: {e}")
+        return cls._instance
+
+    def get_connection(self):
+        return self._conn
+
 
 @app.route('/')
 def home():
@@ -34,28 +42,39 @@ def about():
     return render_template('about.html', title="Acerca de nosotros")
 
 @app.route('/registro', methods=['GET', 'POST'])
+@app.route('/registro', methods=['GET', 'POST'])
 def registro():
     form = MiFormulario()
     if request.method == 'POST' and form.validate_on_submit():
         nombre = form.name.data
         email = form.email.data
         password = form.password.data
-        
-        conn = get_db_connection()
+
+        conn = DBConnection().get_connection()
         if conn:
             try:
                 cursor = conn.cursor()
+                
+                # Verificar si el correo ya existe
+                cursor.execute("SELECT id FROM usuarios WHERE email = ?", (email,))
+                existente = cursor.fetchone()
+                if existente:
+                    flash('Este correo ya está registrado. Intenta con otro.', 'warning')
+                    return render_template('registro.html', form=form)
+
+                # Insertar nuevo usuario
                 query = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)"
                 cursor.execute(query, (nombre, email, generate_password_hash(password)))
                 conn.commit()
-                cursor.close()
-                conn.close()
                 flash('Registro exitoso. Ahora puedes iniciar sesión.', 'success')
                 return redirect(url_for('login'))
+            
             except Exception as e:
                 flash(f'Error al registrar: {e}', 'danger')
-
+            finally:
+                cursor.close()
     return render_template('registro.html', form=form)
+
 
 @app.route('/agregarevento', methods=['GET', 'POST'])
 def agregarevento():
@@ -68,7 +87,7 @@ def agregarevento():
         descripcion = form.descripcion.data
 
         # Insertar datos en la base de datos
-        conn = get_db_connection()
+        conn = DBConnection().get_connection()
         if conn:
             try:
                 cursor = conn.cursor()
@@ -91,7 +110,7 @@ def login():
         email = form.email.data
         password = form.password.data
 
-        conn = get_db_connection()
+        conn = DBConnection().get_connection()
         if conn:
             cursor = conn.cursor()
             query = "SELECT id, password FROM usuarios WHERE email = ?"

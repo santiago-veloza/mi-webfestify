@@ -5,8 +5,11 @@
     <title>Registro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}" alt="fondo">
 </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mensaje.css') }}"alt="fondo">
+    <script src="{{ url_for('static', filename='js/mensaje.js') }}"></script>
 <body>
     <h1>Registro</h1>
+    
     <form method="POST">
         {{ form.hidden_tag() }}
         <p>{{ form.name.label }} {{ form.name }}</p>
@@ -20,4 +23,14 @@
     <a href="/login">Iniciar Sesión</a>
 <nav>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+        <li class="flash {{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endwith %}
+
 </html>
