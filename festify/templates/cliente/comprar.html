@@ -29,11 +29,19 @@
 
         <form method="POST" class="formulario">
             <label for="cantidad">¿Cuántos tiquetes deseas comprar?</label>
-            <input type="number" name="cantidad" min="1" max="{{ evento.tiquetes }}" required>
+            <input type="number" id="cantidad" name="cantidad" min="1" max="{{ evento.tiquetes }}" required>
+
             <button type="submit">Confirmar Compra</button>
+            <p><strong>Total a pagar:</strong> <span id="total">$0</span></p>
         </form>
 
         <a href="{{ url_for('eventos_cliente') }}" class="volver">⬅ Volver a eventos</a>
     </div>
 </body>
+<script>
+  const precioBoleta = parseFloat("{{ evento.precio|replace(',', '')|replace('$', '')|default('0') }}");
+</script>
+
+<script src="{{ url_for('static', filename='js/comprar.js') }}"></script>
+
 </html>

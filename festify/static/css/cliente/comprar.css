@@ -112,3 +112,7 @@ button:hover {
     80% { opacity: 1; }
     100% { opacity: 0; display: none; }
 }
+#total {
+    font-size: 1.2em;
+    color: #4a148c;
+}

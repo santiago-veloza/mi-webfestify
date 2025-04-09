@@ -166,9 +166,9 @@ def login_cliente():
             conn.close()
 
             if cliente and check_password_hash(cliente[1], password):
+                session['cliente_id'] = cliente[0]  # 👈 Guardar ID en sesión
                 flash('Inicio de sesión de cliente exitoso.', 'success')
                 return redirect(url_for('eventos_cliente'))
-
             else:
                 flash('Correo o contraseña incorrectos (cliente)', 'danger')
 
@@ -213,7 +213,7 @@ def registro_cliente():
 def eventos_cliente():
     if 'cliente_id' not in session:
         flash('Debes iniciar sesión como cliente para ver los eventos.', 'warning')
-        return redirect(url_for('logincliente'))  # redirige a login si no hay sesión
+        return redirect(url_for('login_cliente'))  # redirige a login si no hay sesión
 
     conn = DBConnection().get_connection()
     eventos = []

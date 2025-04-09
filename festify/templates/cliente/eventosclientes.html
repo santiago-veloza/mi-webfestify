@@ -29,10 +29,6 @@
                 <p><strong>tiquetes:</strong> {{ evento[6] }}</p>
                 <p><strong>precio:</strong> {{ evento[7] }}</p>
                 <a class="boton-comprar" href="{{ url_for('comprar_tiquetes', evento_id=evento[0]) }}">Comprar</a>
-
-
-
-
             </div>
         {% endfor %}
     </div>
