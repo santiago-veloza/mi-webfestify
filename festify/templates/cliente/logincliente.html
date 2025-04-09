@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente/logincliente.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h1>  inicia seccion para 
+        comprar tus entradas</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.email.label }} {{ form.email }}</p>
+        <p>{{ form.password.label }} {{ form.password }}</p>
+        <p>{{ form.submit }}</p>
+    </form>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/cliente/registro">Registrate</a>
+
+    </nav>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos Disponibles</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente/eventosclientes.css') }}">
+</head>
+<body>
+    <h1>Eventos Disponibles</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if eventos %}
+    <div class="container-eventos">
+        {% for evento in eventos %}
+            <div class="cuadro-evento">
+                <h3>{{ evento[1] }}</h3>
+                <p><strong>Fecha:</strong> {{ evento[2] }}</p>
+                <p><strong>Hora:</strong> {{ evento[3] }}</p>
+                <p><strong>Ubicación:</strong> {{ evento[4] }}</p>
+                <p><strong>Descripción:</strong> {{ evento[5] }}</p>
+                <p><strong>tiquetes:</strong> {{ evento[6] }}</p>
+                <p><strong>precio:</strong> {{ evento[7] }}</p>
+                <a class="boton-comprar" href="{{ url_for('comprar_tiquetes', evento_id=evento[0]) }}">Comprar</a>
+
+
+
+
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No hay eventos disponibles.</p>
+{% endif %}
+
+    <nav>
+        <a href="/">Inicio</a>
+    </nav>
+</body>
+</html>

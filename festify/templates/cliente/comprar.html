@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprar Tiquetes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente/comprar.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Compra de Tiquetes</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      
+        <div class="evento-info">
+            <p><strong>Evento:</strong> {{ evento.nombre }}</p>
+            <p><strong>Fecha:</strong> {{ evento.fecha }}</p>
+            <p><strong>Hora:</strong> {{ evento.hora }}</p>
+            <p><strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
+            <p><strong>Precio:</strong> {{ evento.precio }}</p>
+            <p><strong>Tiquetes disponibles:</strong> {{ evento.tiquetes }}</p>
+        </div>
+
+        <form method="POST" class="formulario">
+            <label for="cantidad">¿Cuántos tiquetes deseas comprar?</label>
+            <input type="number" name="cantidad" min="1" max="{{ evento.tiquetes }}" required>
+            <button type="submit">Confirmar Compra</button>
+        </form>
+
+        <a href="{{ url_for('eventos_cliente') }}" class="volver">⬅ Volver a eventos</a>
+    </div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 #run.py
 
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 import mariadb
-from festify.forms import MiFormulario, EventoForm, LoginForm  
+from festify.forms import MiFormulario, EventoForm, LoginForm , RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
 
 # Configuración de la base de datos
+
 class DBConnection:
     _instance = None
     _conn = None
@@ -17,19 +18,29 @@ class DBConnection:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(DBConnection, cls).__new__(cls)
-            try:
-                cls._conn = mariadb.connect(
-                    host='localhost',
-                    user='root',
-                    password='ucc2025',
-                    database='festify',
-                    port=3306
-                )
-            except mariadb.Error as e:
-                print(f"Error de conexión: {e}")
+            cls._connect()
         return cls._instance
 
+    @classmethod
+    def _connect(cls):
+        try:
+            cls._conn = mariadb.connect(
+                host='localhost',
+                user='root',
+                password='ucc2025',
+                database='festify',
+                port=3306
+            )
+        except mariadb.Error as e:
+            print(f"Error de conexión: {e}")
+            cls._conn = None
+
     def get_connection(self):
+        try:
+            self._conn.ping()  # Verifica si sigue activa
+        except mariadb.Error:
+            print("Conexión cerrada. Reconectando...")
+            self._connect()
         return self._conn
 
 
@@ -85,14 +96,18 @@ def agregarevento():
         hora = form.hora.data
         ubicacion = form.ubicacion.data
         descripcion = form.descripcion.data
+        tiquetes = form.tiquetes.data
+        precio = form.precio.data
 
-        # Insertar datos en la base de datos
         conn = DBConnection().get_connection()
         if conn:
             try:
                 cursor = conn.cursor()
-                query = "INSERT INTO festify (nombre, fecha, hora, ubicacion, descripcion) VALUES (?, ?, ?, ?, ?)"
-                cursor.execute(query, (nombre, fecha, hora, ubicacion, descripcion))
+                query = """
+                    INSERT INTO festify (nombre, fecha, hora, ubicacion, descripcion, tiquetes, precio)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """
+                cursor.execute(query, (nombre, fecha, hora, ubicacion, descripcion, tiquetes, precio))
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -102,6 +117,7 @@ def agregarevento():
                 flash(f'Error al guardar el evento: {e}', 'danger')
 
     return render_template('agregarevento.html', title="Agregar Evento", form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -129,6 +145,122 @@ def login():
             else:
                 flash('Correo o contraseña incorrectos', 'danger')
     return render_template('login.html', title="Login", form=form)
+
+
+#-------------------rutas cliente----------------------------------------------------
+
+@app.route('/cliente/login', methods=['GET', 'POST'])
+def login_cliente():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        conn = DBConnection().get_connection()
+        if conn:
+            cursor = conn.cursor()
+            query = "SELECT cliente_id, clave_cliente FROM clientesb WHERE correo_cliente = ?"
+            cursor.execute(query, (email,))
+            cliente = cursor.fetchone()
+            cursor.close()
+            conn.close()
+
+            if cliente and check_password_hash(cliente[1], password):
+                flash('Inicio de sesión de cliente exitoso.', 'success')
+                return redirect(url_for('eventos_cliente'))
+
+            else:
+                flash('Correo o contraseña incorrectos (cliente)', 'danger')
+
+    return render_template('cliente/logincliente.html', title="Login Cliente", form=form)
+
+@app.route('/cliente/registro', methods=['GET', 'POST'])
+def registro_cliente():
+    form = RegistroClienteForm()
+    if form.validate_on_submit():
+        nombre = form.nombre.data
+        correo = form.correo.data
+        password = form.password.data
+
+        conn= DBConnection().get_connection()
+        if conn:
+            cursor = conn.cursor()
+
+            # Verificar si el correo ya existe
+            cursor.execute("SELECT * FROM clientesb WHERE correo_cliente = ?", (correo,))
+            existente = cursor.fetchone()
+            if existente:
+                flash('El correo ya está registrado como cliente.', 'warning')
+                cursor.close()
+                conn.close()
+                return redirect(url_for('registro_cliente'))
+
+            # Insertar nuevo cliente
+            hashed_password = generate_password_hash(password)
+            cursor.execute(
+                "INSERT INTO clientesb (nombre, correo_cliente, clave_cliente) VALUES (?, ?, ?)",
+                (nombre, correo, hashed_password)
+            )
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash('Cliente registrado exitosamente. Ahora puedes iniciar sesión.', 'success')
+            return redirect(url_for('login_cliente'))
+
+    return render_template('cliente/registrocliente.html', form=form, title="Registro Cliente")
+
+@app.route('/cliente/eventos')
+def eventos_cliente():
+    if 'cliente_id' not in session:
+        flash('Debes iniciar sesión como cliente para ver los eventos.', 'warning')
+        return redirect(url_for('logincliente'))  # redirige a login si no hay sesión
+
+    conn = DBConnection().get_connection()
+    eventos = []
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM festify")
+        eventos = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+    return render_template('cliente/eventosclientes.html', eventos=eventos, title="Eventos Disponibles")
+
+@app.route('/comprar/<int:evento_id>', methods=['GET', 'POST'])
+def comprar_tiquetes(evento_id):
+    db = DBConnection().get_connection()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM festify WHERE id = ?", (evento_id,))
+    resultado = cursor.fetchone()
+
+    if not resultado:
+        flash('Evento no encontrado.', 'error')
+        return redirect(url_for('eventos_cliente'))
+
+    # Convertir a diccionario manualmente
+    columnas = [col[0] for col in cursor.description]
+    evento = dict(zip(columnas, resultado))
+
+    if request.method == 'POST':
+        cantidad = int(request.form['cantidad'])
+
+        if cantidad <= 0:
+            flash('La cantidad debe ser mayor a 0.', 'error')
+        elif cantidad > evento['tiquetes']:
+            flash('No hay suficientes tiquetes disponibles.', 'error')
+        else:
+            nuevos_tiquetes = evento['tiquetes'] - cantidad
+            cursor.execute("UPDATE festify SET tiquetes = ? WHERE id = ?", (nuevos_tiquetes, evento_id))
+            db.commit()
+            flash(f'Compra realizada con éxito. Compraste {cantidad} tiquete(s).', 'success')
+            return redirect(url_for('eventos_cliente'))
+
+    return render_template('cliente/comprar.html', evento=evento, title="Comprar Tiquetes")
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
