@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 import mariadb
 from festify.forms import MiFormulario, EventoForm, LoginForm , RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_mail import Mail, Message
+from flask import Flask
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
@@ -43,7 +44,18 @@ class DBConnection:
             self._connect()
         return self._conn
 
+#--------------------Configuración de correo----------------------------------
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'festifysoporte@gmail.com'
+app.config['MAIL_PASSWORD'] = 'vipw fzjs jxwe txru'  # Contraseña de aplicación
+app.config['MAIL_DEFAULT_SENDER'] = 'festifysoporte@gmail.com'
 
+
+mail = Mail(app)
+
+#--------------------rutas empresarios----------------------------------
 @app.route('/')
 def home():
     return render_template('index.html', title="Inicio")
@@ -52,7 +64,8 @@ def home():
 def about():
     return render_template('about.html', title="Acerca de nosotros")
 
-@app.route('/registro', methods=['GET', 'POST'])
+
+
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     form = MiFormulario()
@@ -77,7 +90,15 @@ def registro():
                 query = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)"
                 cursor.execute(query, (nombre, email, generate_password_hash(password)))
                 conn.commit()
-                flash('Registro exitoso. Ahora puedes iniciar sesión.', 'success')
+
+                # Enviar correo de bienvenida
+                enviar_correo(
+                    destinatario=email,
+                    asunto='🎉 ¡Bienvenido a Festify!',
+                    cuerpo=f"Hola {nombre},\n\nGracias por registrarte en Festify.\n¡Explora eventos y disfruta la música!\n\nEl equipo de Festify."
+                )
+
+                flash('Registro exitoso. Se ha enviado un correo de bienvenida.', 'success')
                 return redirect(url_for('login'))
             
             except Exception as e:
@@ -85,7 +106,6 @@ def registro():
             finally:
                 cursor.close()
     return render_template('registro.html', form=form)
-
 
 @app.route('/agregarevento', methods=['GET', 'POST'])
 def agregarevento():
@@ -182,7 +202,7 @@ def registro_cliente():
         correo = form.correo.data
         password = form.password.data
 
-        conn= DBConnection().get_connection()
+        conn = DBConnection().get_connection()
         if conn:
             cursor = conn.cursor()
 
@@ -204,7 +224,15 @@ def registro_cliente():
             conn.commit()
             cursor.close()
             conn.close()
-            flash('Cliente registrado exitosamente. Ahora puedes iniciar sesión.', 'success')
+
+            # Enviar correo de bienvenida al cliente
+            enviar_correo(
+                destinatario=correo,
+                asunto='🎟️ ¡Bienvenido a Festify, Cliente!',
+                cuerpo=f"Hola {nombre},\n\nGracias por registrarte como cliente en Festify.\nYa puedes iniciar sesión y comprar tus boletas favoritas.\n\n¡Nos alegra tenerte con nosotros!\n\n- Equipo Festify"
+            )
+
+            flash('Cliente registrado exitosamente. Revisa tu correo. Ahora puedes iniciar sesión.', 'success')
             return redirect(url_for('login_cliente'))
 
     return render_template('cliente/registrocliente.html', form=form, title="Registro Cliente")
@@ -259,6 +287,14 @@ def comprar_tiquetes(evento_id):
 
     return render_template('cliente/comprar.html', evento=evento, title="Comprar Tiquetes")
 
+#------------------- funciones para gmail----------------------------------------------------
+def enviar_correo(destinatario, asunto, cuerpo):
+    try:
+        msg = Message(asunto, recipients=[destinatario])
+        msg.body = cuerpo
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error al enviar correo: {e}")
 
 
 
