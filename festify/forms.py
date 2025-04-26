@@ -1,13 +1,13 @@
 
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, SubmitField, PasswordField, DateField, TextAreaField, TimeField
+from wtforms.fields import StringField,EmailField, SubmitField, PasswordField, DateField, TextAreaField, TimeField
 from wtforms.validators import DataRequired, Email, Length
 from wtforms import IntegerField
 
 class MiFormulario(FlaskForm):
     name = StringField('Nombre', validators=[DataRequired(), Length(max=64)])
-    password = PasswordField('Password', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Registrar')
     
 
@@ -29,6 +29,6 @@ class LoginForm(FlaskForm):
     
 class RegistroClienteForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired(), Length(max=100)])
-    correo = StringField('Correo Electrónico', validators=[DataRequired(), Email()])
+    correo = EmailField('Correo Electrónico', validators=[DataRequired(), Email()])
     password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     submit = SubmitField('Registrarse')

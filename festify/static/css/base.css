@@ -23,10 +23,13 @@ header h1 {
 
 /* Logo */
 .logo {
-    width: 750px;
-    height: auto;
+    max-width: 100%;   /* Limita el tamaño al ancho del contenedor */
+    height: auto;      /* Mantiene la proporción */
     border-radius: 10%;
+    display: block;    /* Elimina espacios extra debajo de la imagen */
+    margin: 0 auto;    /* Centra horizontalmente */
 }
+
 
 /* Navegación */
 nav {
@@ -66,4 +69,21 @@ footer {
 footer p {
     margin: 0;
     font-size: 14px;
+}
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    nav a {
+        display: block;
+        text-align: center;
+        margin: 5px 0;
+        font-size: 16px;
+    }
 }

@@ -1,60 +1,121 @@
 /* Estilos generales */
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #7b4397, #dc2430);
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* Contenedor del formulario */
 form {
-    background: rgb(255, 255, 255);
+    background: #ffffff;
+    width: 100%;
     max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
 }
 
 /* Etiquetas y campos */
 p {
-    margin: 10px 0;
+    margin: 15px 0;
     font-size: 16px;
     font-weight: bold;
+    display: flex;
+    flex-direction: column;
 }
 
-input[type="text"], 
-input[type="email"], 
+input[type="text"],
+input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 3px;
-    margin-top: 7px;
-    border: 1px solid #000000;
-    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #7b4397;
+    box-shadow: 0 0 5px rgba(123, 67, 151, 0.5);
+    outline: none;
 }
 
 /* Botón de envío */
 input[type="submit"] {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    color: rgb(7, 0, 0);
+    background: linear-gradient(to right, #7b4397, #dc2430);
+    color: white;
     font-size: 16px;
-    padding: 10px;
+    padding: 12px;
     width: 100%;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    font-weight: bold;
+    transition: background 0.3s ease;
 }
 
 input[type="submit"]:hover {
-    background: linear-gradient(135deg, #5a78d1, #9059c9);
+    background: linear-gradient(to right, #a044ff, #6a3093);
+}
+
+/* Enlaces de navegación */
+nav {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 10px;
     font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
+nav a:hover {
+    color: #ffd700;
+}
+/* Media Queries: dispositivos pequeños */
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    nav a {
+        font-size: 16px;
+        display: block;
+        text-align: center;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    form {
+        margin: 20px auto;
+    }
+}

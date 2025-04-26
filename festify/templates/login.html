@@ -2,18 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- para responsive -->
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" alt="fondo">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
     <h1>Iniciar Sesión</h1>
+
     <form method="POST">
         {{ form.hidden_tag() }}
         <p>{{ form.email.label }} {{ form.email }}</p>
         <p>{{ form.password.label }} {{ form.password }}</p>
         <p>{{ form.submit }}</p>
     </form>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/registro">Registrarse</a>
+    </nav>
 </body>
-<nav>
-    <a href="/">Inicio</a>
 </html>
