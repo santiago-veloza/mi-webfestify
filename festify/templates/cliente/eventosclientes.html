@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cliente/eventosclientes.css') }}">
 </head>
 <body>
+    <nav>
+        <a href="/">Inicio</a>
+     
+    </nav>
     <h1>Eventos Disponibles</h1>
+
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes">
@@ -37,8 +43,6 @@
     <p>No hay eventos disponibles.</p>
 {% endif %}
 
-    <nav>
-        <a href="/">Inicio</a>
-    </nav>
+
 </body>
 </html>

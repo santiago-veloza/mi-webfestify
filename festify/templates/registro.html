@@ -10,12 +10,7 @@
 </head>
 <body>
 
-    <nav>
-        <a href="/">Inicio</a>
-        <a href="/login">Iniciar Sesión</a>
-    </nav>
-
-    <h1>Registro</h1>
+    <h1>Registrate</h1>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -49,4 +44,9 @@
     </form>
 
 </body>
+
+<nav>
+    <a href="/">Inicio</a>
+    <a href="/login">Iniciar Sesión</a>
+</nav>
 </html>

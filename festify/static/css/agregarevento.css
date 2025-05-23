@@ -1,71 +1,116 @@
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6e8efb, #a777e3); 
-    text-align: center;
+/* Reset básico para eliminar márgenes y paddings predeterminados */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-header h1 {
-    background-color: #007bff;
-    color: white;
-    padding: 20px;
-    margin-bottom: 20px;
+/* Fuente principal y fondo general */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e1b4b, #111827);
+    color: #f3f4f6;
+    padding: 2rem;
+    min-height: 100vh;
 }
 
-form {
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    margin-top: 15px;
-    padding: 10px;
-    width: 100%;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Navegación */
+/* Estilo para la barra de navegación */
 nav {
-    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2rem;
 }
 
 nav a {
+    color: #facc15;
     text-decoration: none;
-    color: white;
-    margin: 0 15px;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-weight: 600;
+    margin-right: 1.5rem;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    color: #1cf853;
+    color: #ffffff;
 }
 
+/* Título principal */
+h1 {
+    text-align: center;
+    color: #facc15;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
 
+/* Contenedor del formulario */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo para etiquetas */
+form label {
+    display: block;
+    margin-top: 1.2rem;
+    font-weight: 600;
+    color: #f3f4f6;
+}
+
+/* Estilo para inputs y áreas de texto */
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Estilo para el botón de envío */
+form button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 2rem;
+    background: linear-gradient(90deg, #9333ea, #f43f5e);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #7e22ce, #e11d48);
+    transform: translateY(-3px);
+}
+
+/* Adaptabilidad en dispositivos móviles */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    form {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}

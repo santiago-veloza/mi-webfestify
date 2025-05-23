@@ -1,67 +1,124 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo general con ambiente festivo oscuro */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #d3cce3, #e9e4f0);
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    color: #f3f4f6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
+    padding: 2rem;
+    min-height: 100vh;
 }
 
+/* Título principal */
 h1 {
-    color: #4a148c;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #facc15;
     text-align: center;
-} 
-
-form {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    width: 300px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
+/* Formulario de login */
+form {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Campos del formulario */
 form p {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 1.2rem;
+    font-weight: 500;
 }
 
 label {
-    font-weight: bold;
-    margin-bottom: 5px;
+    display: block;
+    margin-bottom: 0.3rem;
 }
 
-input {
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-button, input[type="submit"] {
-    background-color: #4a148c;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
+input[type="email"],
+input[type="password"] {
     width: 100%;
-    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #f3f4f6;
+    color: #111827;
+    font-size: 1rem;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    color: white;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-button:hover, input[type="submit"]:hover {
-    background-color: #6a1b9a;
+input[type="submit"]:hover {
+    transform: scale(1.02);
+    background: linear-gradient(90deg, #059669, #2563eb);
 }
 
+/* Navegación */
 nav {
-    margin-top: 20px;
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
 }
 
 nav a {
-    color: #4a148c;
     text-decoration: none;
+    font-weight: 600;
+    color: #facc15;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* Flash messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.flash {
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
     font-weight: bold;
+    margin-bottom: 0.8rem;
+    color: #fff;
+}
+
+.flash.success {
+    background-color: #16a34a;
+}
+
+.flash.error {
+    background-color: #dc2626;
 }
