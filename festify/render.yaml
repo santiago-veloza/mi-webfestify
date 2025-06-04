@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: festify
+    env: python
+    buildCommand: ""
+    startCommand: "python run.py"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: MYSQL_URI
+        value: mysql://usuario:root host:3306/db_festify
+      - key: SECRET_KEY
+        value: ucc2025
