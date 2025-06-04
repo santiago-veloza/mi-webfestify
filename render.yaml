@@ -4,6 +4,7 @@ services:
     env: python
     buildCommand: ""
     startCommand: "python run.py"
+    plan: free
     envVars:
       - key: FLASK_ENV
         value: production

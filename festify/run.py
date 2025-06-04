@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
-import mariadb
 from datetime import datetime, timedelta
 from .forms import MiFormulario, EventoForm, LoginForm, RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
+import mysql.connector
+from mysql.connector import Error
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
+
 
 # Configuración de la base de datos
 class DBConnection:
@@ -22,24 +24,25 @@ class DBConnection:
     @classmethod
     def _connect(cls):
         try:
-            cls._conn = mariadb.connect(
+            cls._conn = mysql.connector.connect(
                 host='localhost',
                 user='root',
                 password='ucc2025',
                 database='festify',
                 port=3306
             )
-        except mariadb.Error as e:
-            print(f"Error de conexión: {e}")
+            if cls._conn.is_connected():
+                print("✅ Conectado exitosamente a la base de datos.")
+        except Error as e:
+            print(f"❌ Error de conexión: {e}")
             cls._conn = None
 
     def get_connection(self):
-        try:
-            self._conn.ping()
-        except mariadb.Error:
-            print("Conexión cerrada. Reconectando...")
+        if self._conn is None or not self._conn.is_connected():
+            print("⛔ No hay conexión o está caída. Intentando reconectar...")
             self._connect()
         return self._conn
+
 
 # Configuración de correo
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -177,7 +180,6 @@ def agregarevento():
         tiquetes = form.tiquetes.data
         precio = form.precio.data
 
-        # 🔥 Aquí capturas el usuario actual desde la sesión
         usuario_id = session.get('usuario_id')
         if not usuario_id:
             flash('Debes iniciar sesión para agregar un evento.', 'warning')
@@ -187,7 +189,6 @@ def agregarevento():
         if conn:
             try:
                 cursor = conn.cursor()
-                # 🔥 Agrega el campo usuario_id en la consulta
                 query = """
                     INSERT INTO festify (nombre, fecha, hora, ubicacion, descripcion, tiquetes, precio, usuario_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -196,12 +197,11 @@ def agregarevento():
                 conn.commit()
                 flash('Evento agregado correctamente.', 'success')
                 return redirect(url_for('home'))
-            except mariadb.Error as e:
+            except Error as e:  # ✅ CAMBIO aquí (antes era `mariadb.Error`)
                 flash(f'Error al guardar el evento: {e}', 'danger')
             finally:
                 cursor.close()
     return render_template('agregarevento.html', title="Agregar Evento", form=form)
-
 @app.route('/info')
 def info_eventos():
     print("ID en sesión:", session.get('usuario_id'))
