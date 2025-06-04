@@ -99,3 +99,54 @@ h3 {
         padding: 1rem;
     }
 }
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background: #1e1b4b;
+    color: #facc15;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 400px;
+    text-align: center;
+    animation: popupFadeIn 0.4s ease-in-out;
+}
+
+.popup-button {
+    display: inline-block;
+    margin-top: 1rem;
+    background: #f43f5e;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.popup-button:hover {
+    background: #e11d48;
+}
+
+.popup-content button {
+    background: none;
+    border: none;
+    color: #ccc;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+@keyframes popupFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}

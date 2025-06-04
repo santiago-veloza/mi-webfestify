@@ -9,7 +9,7 @@
 <body>
     <nav>
         <a href="/">Inicio</a>
-     
+    
     </nav>
     <h1>Eventos Disponibles</h1>
 
@@ -24,20 +24,20 @@
         {% endif %}
     {% endwith %}
 
-    {% if eventos %}
-    <div class="container-eventos">
-        {% for evento in eventos %}
-            <div class="cuadro-evento">
-                <h3>{{ evento[1] }}</h3>
-                <p><strong>Fecha:</strong> {{ evento[2] }}</p>
-                <p><strong>Hora:</strong> {{ evento[3] }}</p>
-                <p><strong>Ubicación:</strong> {{ evento[4] }}</p>
-                <p><strong>Descripción:</strong> {{ evento[5] }}</p>
-                <p><strong>tiquetes:</strong> {{ evento[6] }}</p>
-                <p><strong>precio:</strong> {{ evento[7] }}</p>
-                <a class="boton-comprar" href="{{ url_for('comprar_tiquetes', evento_id=evento[0]) }}">Comprar</a>
-            </div>
-        {% endfor %}
+{% if eventos %}
+        <div class="eventos-lista">
+            {% for evento in eventos %}
+                <div class="evento-item">
+                    <h3>{{ evento['nombre'] }}</h3>
+                    <p><strong>Fecha:</strong> {{ evento['fecha'] }}</p>
+                    <p><strong>Hora:</strong> {{ evento['hora'] }}</p>
+                    <p><strong>Ubicación:</strong> {{ evento['ubicacion'] }}</p>
+                    <p><strong>Descripción:</strong> {{ evento['descripcion'] }}</p>
+                    <p><strong>Tiquetes:</strong> {{ evento['tiquetes'] }}</p>
+                    <p><strong>Precio:</strong> {{ evento['precio'] }}</p>
+                    <a class="boton-comprar" href="{{ url_for('comprar_tiquetes', evento_id=evento['id']) }}">Comprar</a>
+                </div>
+            {% endfor %}
     </div>
 {% else %}
     <p>No hay eventos disponibles.</p>

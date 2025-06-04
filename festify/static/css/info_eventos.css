@@ -1,0 +1,112 @@
+/* static/css/agregarevento.css */
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+}
+
+nav {
+    background-color: #004080;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ffd700;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #004080;
+}
+
+p {
+    text-align: center;
+    margin: 0.5rem auto;
+    max-width: 600px;
+}
+
+ul {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    list-style: none;
+}
+
+li {
+    background-color: #ffffff;
+    border-left: 5px solid #004080;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+
+li:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+li h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #222;
+    font-size: 1.3rem;
+}
+
+li p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Responsive: Tablets y móviles */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    h1, h2 {
+        font-size: 1.4rem;
+    }
+
+    li {
+        padding: 1rem;
+    }
+
+    li h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 0.95rem;
+    }
+
+    nav {
+        padding: 0.8rem;
+    }
+
+    ul {
+        padding: 0 0.5rem;
+    }
+
+    li {
+        padding: 0.8rem;
+    }
+}

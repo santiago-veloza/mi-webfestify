@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2> ¡Bienvenido a WebFestify!Nos emociona tenerte aquí🎉</h2>
-    
+    <h2>¡Bienvenido a WebFestify! Nos emociona tenerte aquí 🎉</h2>
+
+    {% if evento_reciente %}
+    <div id="popup-evento" class="popup-overlay">
+        <div class="popup-content">
+            <h2>🎉 ¡Nuevo Evento!</h2>
+            <p><strong>{{ evento_reciente.nombre }}</strong></p>
+            <p>{{ evento_reciente.descripcion }}</p>
+            <p><strong>{{ evento_reciente.fecha }}</strong> a las {{ evento_reciente.hora }}</p>
+            <a href="{{ url_for('comprar_tiquetes', evento_id=evento_reciente.id) }}" class="popup-button">Ver evento</a>
+            <button onclick="cerrarPopup()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function cerrarPopup() {
+            document.getElementById('popup-evento').style.display = 'none';
+        }
+
+        window.onload = function () {
+            document.getElementById('popup-evento').style.display = 'flex';
+        }
+    </script>
+    {% endif %}
 {% endblock %}

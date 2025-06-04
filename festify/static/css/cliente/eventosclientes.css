@@ -1,112 +1,150 @@
+/* cliente/eventosclientes.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
     margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+    color: #333;
+    line-height: 1.6;
     padding: 20px;
 }
 
-h2 {
-    text-align: center;
-    color: #4a148c;
-    margin-bottom: 30px;
-    font-size: 2rem;
-}
-
-.container-eventos {
+nav {
+    background-color: #1e40af; /* azul oscuro */
+    padding: 15px 30px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
-.cuadro-evento {
-    background-color: white;
-    border-radius: 10px;
-    width: 250px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #93c5fd; /* azul claro */
+}
+
+h1 {
+    text-align: center;
+    color: #1e3a8a; /* azul medio */
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.flashes {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.flash {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.flash.success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.flash.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.eventos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.evento-item {
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.cuadro-evento:hover {
-    transform: scale(1.03);
+.evento-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.25);
 }
 
-.cuadro-evento h3 {
-    color: #6a1b9a;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+.evento-item h3 {
+    margin-top: 0;
+    color: #1e40af;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
 }
 
-.cuadro-evento p {
-    margin: 5px 0;
-    font-size: 0.95rem;
-    color: #333;
+.evento-item p {
+    margin: 6px 0;
+    font-size: 1rem;
+    color: #4b5563; /* gris medio */
 }
 
 .boton-comprar {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #4a148c;
-    color: white;
-    border: none;
-    border-radius: 8px;
+    margin-top: 20px;
+    padding: 12px 18px;
+    background-color: #1e40af;
+    color: #fff;
     text-align: center;
+    font-weight: 600;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3);
 }
 
 .boton-comprar:hover {
-    background-color: #7b1fa2;
+    background-color: #3b82f6;
+    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
 }
 
-/* Estilo para los mensajes flash */
-.flashes {
-    list-style-type: none;
-    padding: 0;
-    margin: 20px auto;
-    max-width: 600px;
-}
+/* Responsive tweaks */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
 
-.flash {
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-}
+    h1 {
+        font-size: 2rem;
+    }
 
-.flash.success {
-    background-color: #d4edda;
-    color: #155724;
-}
+    .evento-item {
+        padding: 20px;
+    }
 
-.flash.error {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* Estilo para el nav */
-nav {
-    margin-top: 40px;
-    text-align: center;
-}
-
-nav a {
-    text-decoration: none;
-    color: #4a148c;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: 2px solid #4a148c;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-nav a:hover {
-    background-color: #4a148c;
-    color: white;
+    .boton-comprar {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
 }

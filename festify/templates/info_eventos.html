@@ -1,0 +1,39 @@
+<!-- templates/info_eventos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Eventos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/info_eventos.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/info">Eventos</a>
+    </nav>
+
+
+    <h2>Lista de Eventos</h2>
+    <ul>
+        {% for evento in eventos %}
+        <li>
+            <h3>{{ evento.nombre }}</h3>
+            <p><strong>Fecha:</strong> {{ evento.fecha }} {{ evento.hora }}</p>
+            <p><strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
+            <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+            <p><strong>Tiquetes disponibles:</strong> {{ evento.tiquetes - evento.tiquetes_vendidos }}</p>
+            <p><strong>Tiquetes vendidos:</strong> {{ evento.tiquetes_vendidos }}</p>
+            <p><strong>Precio por tiquete:</strong> ${{ evento.precio }}</p>
+        </li>
+
+        {% endfor %}
+    </ul>
+    <h1>Resumen del total de tus ganacias por tus eventos</h1>
+    <p><strong>Total de boletos vendidos:</strong> {{ total_boletos }}</p>
+    <p><strong>Total de ingresos generados:</strong> ${{ total_ingresos }}</p>
+    <p><strong>Eventos disponibles:</strong> {{ eventos_disponibles|length }}</p>
+
+
+
+</body>
+</html>
