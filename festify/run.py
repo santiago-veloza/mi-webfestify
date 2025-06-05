@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from datetime import datetime, timedelta
-from .forms import MiFormulario, EventoForm, LoginForm, RegistroClienteForm
+from festify.forms import MiFormulario, EventoForm, LoginForm, RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 import mysql.connector

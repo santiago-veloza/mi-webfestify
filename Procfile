@@ -1,2 +1,3 @@
-web: gunicorn run:app
+web: gunicorn festify.run:app
+
 
