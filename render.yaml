@@ -3,7 +3,7 @@ services:
     name: festify
     env: python
     buildCommand: ""
-    startCommand: "python run.py"
+    startCommand: "gunicorn run:app"
     plan: free
     envVars:
       - key: FLASK_ENV
