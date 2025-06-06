@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from .forms import MiFormulario, EventoForm, LoginForm, RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
@@ -61,7 +62,30 @@ def enviar_correo(destinatario, asunto, cuerpo):
         print(f"Error al enviar correo: {e}")
 
 
-# Rutas principales
+
+# Decoradores para verificar si el usuario está logueado como microempresario o cliente
+
+def login_required_cliente(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'cliente_id' not in session:
+            flash('Debes iniciar sesión como cliente para acceder.', 'warning')
+            return redirect(url_for('login_cliente'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def login_required_usuario(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'usuario_id' not in session:
+            flash('Debes iniciar sesión para acceder a esta página.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+
+# Rutas empresarios
 @app.route('/')
 def home():
     conn = DBConnection().get_connection()
@@ -166,6 +190,7 @@ def login():
     return render_template('login.html', title="Login", form=form)
 
 @app.route('/agregarevento', methods=['GET', 'POST'])
+@login_required_usuario
 def agregarevento():
     form = EventoForm()
     if form.validate_on_submit():
@@ -203,6 +228,7 @@ def agregarevento():
     return render_template('agregarevento.html', title="Agregar Evento", form=form)
 
 @app.route('/info')
+@login_required_usuario
 def info_eventos():
     print("ID en sesión:", session.get('usuario_id'))
     if 'usuario_id' not in session:
@@ -220,7 +246,7 @@ def info_eventos():
         cursor.execute("""
             SELECT id, nombre, fecha, hora, ubicacion, descripcion, tiquetes, precio
             FROM festify
-            WHERE usuario_id = ?
+            WHERE usuario_id = %s
         """, (usuario_id,))
         resultados = cursor.fetchall()
         columnas = [col[0] for col in cursor.description]
@@ -229,7 +255,7 @@ def info_eventos():
             evento = dict(zip(columnas, fila))
 
             # Obtener tiquetes vendidos desde la tabla 'compras'
-            cursor.execute("SELECT SUM(cantidad) FROM compras WHERE evento_id = ?", (evento['id'],))
+            cursor.execute("SELECT SUM(cantidad) FROM compras WHERE evento_id = %s", (evento['id'],))
             vendidos = cursor.fetchone()[0] or 0
 
             evento['tiquetes_vendidos'] = vendidos
@@ -260,20 +286,6 @@ def info_eventos():
 
 
 # Rutas para cliente
-
-from functools import wraps
-
-def login_required_cliente(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'cliente_id' not in session:
-            flash('Debes iniciar sesión como cliente para acceder.', 'warning')
-            return redirect(url_for('login_cliente'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-
 
 @app.route('/cliente/login', methods=['GET', 'POST'])
 def login_cliente():
@@ -407,7 +419,7 @@ def comprar_tiquetes(evento_id):
             # Registrar la compra en la tabla 'compras'
             cliente_id = session['cliente_id']
             cursor.execute(
-                "INSERT INTO compras (cliente_id, evento_id, cantidad) VALUES (?, ?, ?)",
+                "INSERT INTO compras (cliente_id, evento_id, cantidad) VALUES (%s, %s, %s)",
                 (cliente_id, evento_id, cantidad)
             )
             db.commit()

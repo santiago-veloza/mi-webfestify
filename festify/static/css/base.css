@@ -31,31 +31,7 @@ header h1 {
     letter-spacing: 2px;
 }
 
-/* Navegación principal */
-nav {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #facc15;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-nav a:hover {
-    color: #ffffff;
-    text-shadow: 0 0 10px #facc15;
-}
-
-/* Contenido principal */
+/* Contenedor principal */
 main {
     background: rgba(255, 255, 255, 0.05);
     padding: 2rem;
@@ -67,12 +43,45 @@ main {
     margin-right: auto;
 }
 
-/* Título de sección */
-h3 {
-    text-align: center;
-    color: #facc15;
-    font-size: 1.8rem;
+/* Dropdown menú */
+.dropdown {
+    display: flex;
+    justify-content: center;
     margin-top: 2rem;
+}
+
+.dropdown-toggle {
+    background-color: #facc15;
+    color: #1e1b4b;
+    font-weight: bold;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    background-color: #fde68a;
+    color: #000;
+}
+
+.dropdown-menu {
+    background-color: #1e1b4b;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.dropdown-item {
+    color: #facc15;
+    padding: 0.75rem 1.5rem;
+    transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #facc15;
+    color: #1e1b4b;
 }
 
 /* Imagen de logo o fondo */
@@ -84,13 +93,70 @@ h3 {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* WhatsApp flotante */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 24px;
+    z-index: 1000;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    color: white;
+    text-decoration: none;
+}
+
+/* Dropdown básico si no usas Bootstrap JS */
+.dropdown {
+    position: center;
+    display: inline-block;
+    margin: 1rem;
+}
+
+.dropdown-menu {
+    display: none;
+    position: center;
+    background-color: #1e1b4b;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    color: #facc15;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+}
+
+.dropdown-item:hover {
+    background-color: #111827;
+    color: white;
+}
+
+
+@keyframes popupFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: center;
-    }
-
     header h1 {
         font-size: 2.2rem;
     }
@@ -98,55 +164,9 @@ h3 {
     main {
         padding: 1rem;
     }
-}
-.popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
 
-.popup-content {
-    background: #1e1b4b;
-    color: #facc15;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    max-width: 400px;
-    text-align: center;
-    animation: popupFadeIn 0.4s ease-in-out;
-}
-
-.popup-button {
-    display: inline-block;
-    margin-top: 1rem;
-    background: #f43f5e;
-    color: #fff;
-    padding: 0.7rem 1.2rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.3s ease;
-}
-
-.popup-button:hover {
-    background: #e11d48;
-}
-
-.popup-content button {
-    background: none;
-    border: none;
-    color: #ccc;
-    margin-top: 0.5rem;
-    cursor: pointer;
-}
-
-@keyframes popupFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    .dropdown {
+        flex-direction: column;
+        align-items: center;
+    }
 }

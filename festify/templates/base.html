@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"alt="fondo">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
 </head>
+
 <body>
     <header>
         <h1>Festify</h1>
@@ -14,14 +17,31 @@
             {% endblock %}
         </main>
     </header>
-    <h3>Menu</h3>
-    <nav>
-        <a href="/">Inicio</a>
-        <a href="/about">Acerca de nosotros</a>
-        <a href="/registro">vende tu evento</a>
-        <a href="/cliente/login">compra boletos</a>
-    </nav>
+
+
+
+    <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">menu</a>
+
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/">Inicio</a></li>
+        <li><a class="dropdown-item" href="/about">Acerca de nosotros</a></li>
+        <li><a class="dropdown-item" href="/registro">Vende tus eventos</a></li>
+        <li><a class="dropdown-item" href="/cliente/login">Compra boletos</a></li>
+    </ul>
+
+
     <img src="{{ url_for('static', filename='img/fondo1.jpg') }}" alt="Logo" class="logo">
-    
+
+<!-- Botón flotante de WhatsApp con Bootstrap Icons -->
+<a href="https://wa.me/573106870437?text=¡Hola!%20Bienvenido%20a%20Festify%2C%20la%20plataforma%20donde%20puedes%20comprar%20y%20vender%20eventos%20fácilmente.%20¿Cómo%20podemos%20ayudarte%3F" 
+    class="whatsapp-float" 
+    target="_blank" 
+    title="Contáctanos por WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+</a>
+
 </body>
+<footer>
+    <p>&copy; 2023 Festify. Todos los derechos reservados.</p>
 </html>
