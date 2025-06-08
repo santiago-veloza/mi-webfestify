@@ -43,13 +43,22 @@ main {
     margin-right: auto;
 }
 
-/* Dropdown menú */
+/* Imagen de logo o fondo */
+.logo {
+    display: block;
+    max-width: 90%;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+/* Dropdown centrado correctamente */
 .dropdown {
-    display: flex;
-    justify-content: center;
+    width: 100%;
+    text-align: center;
     margin-top: 2rem;
 }
 
+/* Botón MENU */
 .dropdown-toggle {
     background-color: #facc15;
     color: #1e1b4b;
@@ -59,24 +68,37 @@ main {
     border: none;
     text-transform: uppercase;
     transition: all 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.dropdown-toggle:hover {
-    background-color: #fde68a;
-    color: #000;
-}
-
+/* Contenedor del menú */
 .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #1e1b4b;
-    border: none;
     border-radius: 10px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    z-index: 999;
 }
 
+/* Mostrar menú al hacer hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Ítems del menú */
 .dropdown-item {
     color: #facc15;
     padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    display: block;
     transition: background 0.3s ease;
+    font-weight: 600;
 }
 
 .dropdown-item:hover {
@@ -84,14 +106,6 @@ main {
     color: #1e1b4b;
 }
 
-/* Imagen de logo o fondo */
-.logo {
-    display: block;
-    max-width: 90%;
-    margin: 2rem auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
 
 /* WhatsApp flotante */
 .whatsapp-float {
@@ -115,41 +129,7 @@ main {
     text-decoration: none;
 }
 
-/* Dropdown básico si no usas Bootstrap JS */
-.dropdown {
-    position: center;
-    display: inline-block;
-    margin: 1rem;
-}
-
-.dropdown-menu {
-    display: none;
-    position: center;
-    background-color: #1e1b4b;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    border-radius: 8px;
-    z-index: 1;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
-.dropdown-item {
-    color: #facc15;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-weight: 600;
-}
-
-.dropdown-item:hover {
-    background-color: #111827;
-    color: white;
-}
-
-
+/* Popup animación */
 @keyframes popupFadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }

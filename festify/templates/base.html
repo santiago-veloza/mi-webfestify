@@ -10,25 +10,32 @@
 </head>
 
 <body>
-    <header>
+    <header>    
+
+
         <h1>Festify</h1>
         <main>
             {% block content %}
             {% endblock %}
         </main>
+
+            <div class="menu-container">
+            <div class="dropdown">
+                <a class="btn dropdown-toggle dropdown-menu-button" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Menú
+                </a>
+                <ul class="dropdown-menu">
+                
+                    <li><a class="dropdown-item" href="/">Inicio</a></li>
+                    <li><a class="dropdown-item" href="/about">Acerca de nosotros</a></li>
+                    <li><a class="dropdown-item" href="/registro">Vende tus eventos</a></li>
+                    <li><a class="dropdown-item" href="/cliente/login">Compra boletos</a></li>
+                </ul>
+            </div>
+        </div>
     </header>
 
 
-
-    <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">menu</a>
-
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="/">Inicio</a></li>
-        <li><a class="dropdown-item" href="/about">Acerca de nosotros</a></li>
-        <li><a class="dropdown-item" href="/registro">Vende tus eventos</a></li>
-        <li><a class="dropdown-item" href="/cliente/login">Compra boletos</a></li>
-    </ul>
 
 
     <img src="{{ url_for('static', filename='img/fondo1.jpg') }}" alt="Logo" class="logo">
@@ -43,5 +50,5 @@
 
 </body>
 <footer>
-    <p>&copy; 2023 Festify. Todos los derechos reservados.</p>
+    <p>Este sitio fue desarrollado por Festify. &copy;-Todos los derechos reservados.</p>
 </html>

@@ -5,11 +5,15 @@ from .forms import MiFormulario, EventoForm, LoginForm, RegistroClienteForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from functools import wraps
+import os
+
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
 
 # Configuración de la base de datos
+# --- CLASE DE CONEXIÓN MODIFICADA PARA RAILWAY ---
 class DBConnection:
     _instance = None
     _conn = None
@@ -17,29 +21,44 @@ class DBConnection:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(DBConnection, cls).__new__(cls)
+            # La conexión se establece solo cuando se crea la instancia
             cls._connect()
         return cls._instance
 
     @classmethod
     def _connect(cls):
         try:
+            # Leemos las variables de entorno que Railway nos proporciona
             cls._conn = mariadb.connect(
-                host='localhost',
-                user='root',
-                password='ucc2025',
-                database='festify',
-                port=3306
+                host=os.getenv("MYSQLHOST"),
+                user=os.getenv("MYSQLUSER"),
+                password=os.getenv("MYSQLPASSWORD"),
+                database=os.getenv("MYSQLDATABASE"),
+                port=int(os.getenv("MYSQLPORT")) # El puerto es un número, hay que convertirlo
             )
+            print("¡Conexión a la base de datos en Railway exitosa!")
         except mariadb.Error as e:
-            print(f"Error de conexión: {e}")
+            print(f"Error de conexión a la base de datos de Railway: {e}")
+            cls._conn = None
+        except TypeError:
+             # Este error ocurre si una variable de entorno no está definida (ej. en local)
+            print("Error: Asegúrate de que todas las variables de entorno de la BD están definidas.")
             cls._conn = None
 
+
     def get_connection(self):
-        try:
-            self._conn.ping()
-        except mariadb.Error:
-            print("Conexión cerrada. Reconectando...")
+        # La lógica para comprobar y reconectar es muy útil, la mantenemos.
+        if self._conn is None:
+            print("No hay conexión. Intentando reconectar...")
             self._connect()
+            return self._conn
+
+        try:
+            self._conn.ping(reconnect=True) # El driver de mariadb puede reconectar solo
+        except mariadb.Error as e:
+            print(f"Ping falló. Intentando reconectar manualmente... Error: {e}")
+            self._connect()
+
         return self._conn
 
 # Configuración de correo
