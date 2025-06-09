@@ -34,7 +34,8 @@ class DBConnection:
                 user=os.getenv("MYSQLUSER"),
                 password=os.getenv("MYSQLPASSWORD"),
                 database=os.getenv("MYSQLDATABASE"),
-                port=int(os.getenv("MYSQLPORT")) # El puerto es un número, hay que convertirlo
+                port=int(os.getenv("MYSQLPORT")), # El puerto es un número, hay que convertirlo
+                autocommit=True
             )
             print("¡Conexión a la base de datos en Railway exitosa!")
         except mariadb.Error as e:
@@ -47,19 +48,34 @@ class DBConnection:
 
 
     def get_connection(self):
-        # La lógica para comprobar y reconectar es muy útil, la mantenemos.
-        if self._conn is None:
-            print("No hay conexión. Intentando reconectar...")
-            self._connect()
-            return self._conn
-
+        # Crear nueva conexión cada vez para evitar problemas
         try:
-            self._conn.ping(reconnect=True) # El driver de mariadb puede reconectar solo
-        except mariadb.Error as e:
-            print(f"Ping falló. Intentando reconectar manualmente... Error: {e}")
-            self._connect()
-
+            if self._conn:
+                self._conn.close()
+        except:
+            pass
+        
+        self._connect()
         return self._conn
+
+
+
+
+
+            # def get_connection(self):
+            #     # La lógica para comprobar y reconectar es muy útil, la mantenemos.
+            #     if self._conn is None:
+            #         print("No hay conexión. Intentando reconectar...")
+            #         self._connect()
+            #         return self._conn
+
+            #     try:
+            #         self._conn.ping(reconnect=True) # El driver de mariadb puede reconectar solo
+            #     except mariadb.Error as e:
+            #         print(f"Ping falló. Intentando reconectar manualmente... Error: {e}")
+            #         self._connect()
+
+            #     return self._conn
 
 # Configuración de correo
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
@@ -432,7 +448,7 @@ def comprar_tiquetes(evento_id):
             flash('No hay suficientes tiquetes disponibles.', 'error')
         else:
             nuevos_tiquetes = evento['tiquetes'] - cantidad
-            cursor.execute("UPDATE festify SET tiquetes = ? WHERE id = %s", (nuevos_tiquetes, evento_id))
+            cursor.execute("UPDATE festify SET tiquetes = %s WHERE id = %s", (nuevos_tiquetes, evento_id))
             db.commit()
 
             # Registrar la compra en la tabla 'compras'
