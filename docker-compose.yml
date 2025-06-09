@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   web:
@@ -5,25 +6,47 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - FLASK_ENV=development
-      - DATABASE_URL=mysql://webfestify_user:password123@db:3306/webfestify_db
+      # Base de datos
+      - MYSQLHOST=db
+      - MYSQLUSER=festify_user
+      - MYSQLPASSWORD=festify_password
+      - MYSQLDATABASE=festify_db
+      - MYSQLPORT=3306
+      # Configuración de correo
+      - MAIL_SERVER=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USE_TLS=True
+      - MAIL_USERNAME=festifysoporte@gmail.com
+      - MAIL_PASSWORD=vipw fzjs jxwe txru
+      - MAIL_DEFAULT_SENDER=festifysoporte@gmail.com
     depends_on:
       - db
     volumes:
       - .:/app
-    command: python app.py
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.6
     environment:
-      MYSQL_DATABASE: webfestify_db
-      MYSQL_USER: webfestify_user
-      MYSQL_PASSWORD: password123
-      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: festify_db
+      MYSQL_USER: festify_user
+      MYSQL_PASSWORD: festify_password
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: festify_user
+      PMA_PASSWORD: festify_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
 
 volumes:
-  mysql_data:
+  db_data:

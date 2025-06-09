@@ -62,18 +62,18 @@ class DBConnection:
         return self._conn
 
 # Configuración de correo
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'festifysoporte@gmail.com'
-app.config['MAIL_PASSWORD'] = 'vipw fzjs jxwe txru'  # Contraseña de aplicación
-app.config['MAIL_DEFAULT_SENDER'] = 'festifysoporte@gmail.com'
-
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() == 'true'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'festifysoporte@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'vipw fzjs jxwe txru')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'festifysoporte@gmail.com')
 mail = Mail(app)
 
 # Función para enviar correo
 def enviar_correo(destinatario, asunto, cuerpo):
     try:
+        print(f"Intentando enviar correo a: {destinatario}")
         msg = Message(asunto, recipients=[destinatario])
         msg.body = cuerpo
         mail.send(msg)
@@ -413,7 +413,7 @@ def comprar_tiquetes(evento_id):
     db = DBConnection().get_connection()
     cursor = db.cursor()
 
-    cursor.execute("SELECT * FROM festify WHERE id = ?", (evento_id,))
+    cursor.execute("SELECT * FROM festify WHERE id = %s", (evento_id,))
     resultado = cursor.fetchone()
 
     if not resultado:
@@ -432,7 +432,7 @@ def comprar_tiquetes(evento_id):
             flash('No hay suficientes tiquetes disponibles.', 'error')
         else:
             nuevos_tiquetes = evento['tiquetes'] - cantidad
-            cursor.execute("UPDATE festify SET tiquetes = ? WHERE id = ?", (nuevos_tiquetes, evento_id))
+            cursor.execute("UPDATE festify SET tiquetes = ? WHERE id = %s", (nuevos_tiquetes, evento_id))
             db.commit()
 
             # Registrar la compra en la tabla 'compras'

@@ -17,6 +17,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Set environment variables for email
+ENV MAIL_SERVER=smtp.gmail.com
+ENV MAIL_PORT=587
+ENV MAIL_USE_TLS=True
+ENV MAIL_USERNAME=festifysoporte@gmail.com
+ENV MAIL_PASSWORD="vipw fzjs jxwe txru"
+ENV MAIL_DEFAULT_SENDER=festifysoporte@gmail.com
+
+
 # Expose port
 EXPOSE 5000
 
